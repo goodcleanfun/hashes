@@ -1,0 +1,23 @@
+{
+  "name": "hashes",
+  "version": "0.1.0",
+  "repo": "goodcleanfun/hashes",
+  "description": "Hashtables for standard types using khash",
+  "keywords": ["hash", "hashtable", "khash", "counter", "hashing"],
+  "license": "MIT",
+  "dependencies": {
+    "goodcleanfun/khash": "*",
+    "goodcleanfun/num_arrays": "*"
+  },
+  "src": [
+    "src/hashes.h",
+    "src/char_uint32.h",
+    "src/int_uint32.h",
+    "src/int64_double.h",
+    "src/int64_uint32.h",
+    "src/str_double.h",
+    "src/str_float.h",
+    "src/str_sort.h",
+    "src/srt_uint32.h"
+  ]
+}
