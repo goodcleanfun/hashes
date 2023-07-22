@@ -6,6 +6,7 @@
 #include "num_arrays/double_array.h"
 
 KHASH_MAP_INIT_STR(str_double, double)
+KHASH_BASE(str_double, char *, double)
 KHASH_SORT_BY_VALUE(str_double, char *, double, double_array)
 KHASH_STR_INCR(str_double, double)
 
