@@ -18,6 +18,8 @@
     "src/str_double.h",
     "src/str_float.h",
     "src/str_sort.h",
-    "src/srt_uint32.h"
+    "src/str_str.h",
+    "src/str_uint32.h",
+    "src/str_uint64.h"
   ]
 }
