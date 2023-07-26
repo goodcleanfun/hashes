@@ -12,14 +12,17 @@
   "src": [
     "src/hashes.h",
     "src/char_uint32.h",
-    "src/int_uint32.h",
-    "src/int64_double.h",
-    "src/int64_uint32.h",
     "src/str_double.h",
     "src/str_float.h",
     "src/str_sort.h",
     "src/str_str.h",
     "src/str_uint32.h",
-    "src/str_uint64.h"
+    "src/str_uint64.h",
+    "src/uint32_double.h",
+    "src/uint32_float.h",
+    "src/uint32_uint32.h",
+    "src/uint64_double.h",
+    "src/uint64_float.h",
+    "src/uint64_uint32.h"
   ]
 }
