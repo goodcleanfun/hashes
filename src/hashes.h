@@ -11,7 +11,7 @@
 // Sort by value (must be defined after the vectors)
 
 #define KHASH_SORT_BY_VALUE(name, key_type, val_type, val_array_name)                       \
-    static key_type *name##_hash_sort_keys_by_value(name##_hash_t *h, bool reversed) {      \
+    static key_type *name##_hash_sort_keys_by_value(name##_hash *h, bool reversed) {      \
         size_t n = kh_size(h);                                                              \
         key_type *keys = malloc(sizeof(key_type) * n);                                      \
         val_type *values = malloc(sizeof(val_type) * n);                                    \
@@ -38,12 +38,12 @@
     }
 
 #define KHASH_NEW(name)                                                                     \
-    static name##_hash_t *name##_hash_new(void) {                                           \
+    static name##_hash *name##_hash_new(void) {                                           \
         return kh_init(name);                                                               \
     }
 
 #define KHASH_GET(name, key_type, val_type)                                                                 \
-    static bool name##_hash_get(name##_hash_t *h, key_type key, val_type *val) {                            \
+    static bool name##_hash_get(name##_hash *h, key_type key, val_type *val) {                            \
         khiter_t k;                                                                                         \
         k = kh_get(name, h, (const key_type)key);                                                           \
         if (k != kh_end(h)) {                                                                               \
@@ -54,7 +54,7 @@
     }
 
 #define KHASH_PUT(name, key_type, val_type)                                                                 \
-    static bool name##_hash_put(name##_hash_t *h, key_type key, val_type val) {                             \
+    static bool name##_hash_put(name##_hash *h, key_type key, val_type val) {                             \
         int ret = 0;                                                                                        \
         khiter_t k = kh_put(name, h, (const key_type)key, &ret);                                            \
         if (ret < 0) {                                                                                      \
@@ -65,7 +65,7 @@
     }
 
 #define KHASH_DEL(name, key_type, val_type)                                                                 \
-    static bool name##_hash_del(name##_hash_t *h, key_type key) {                                           \
+    static bool name##_hash_del(name##_hash *h, key_type key) {                                           \
         khiter_t k;                                                                                         \
         k = kh_get(name, h, (const key_type)key);                                                           \
         if (k != kh_end(h)) {                                                                               \
@@ -76,17 +76,17 @@
     }
 
 #define KHASH_SIZE(name, key_type, val_type)                                                                \
-    static size_t name##_hash_size(name##_hash_t *h) {                                                      \
+    static size_t name##_hash_size(name##_hash *h) {                                                      \
         return kh_size(h);                                                                                  \
     }
 
 #define KHASH_CLEAR(name, key_type, val_type)                                                               \
-    static void name##_hash_clear(name##_hash_t *h) {                                                       \
+    static void name##_hash_clear(name##_hash *h) {                                                       \
         kh_clear(name, h);                                                                                  \
     }
 
 #define KHASH_CONTAINS(name, key_type, val_type)                                                            \
-    static bool name##_hash_contains(name##_hash_t *h, key_type key) {                                      \
+    static bool name##_hash_contains(name##_hash *h, key_type key) {                                      \
         khiter_t k;                                                                                         \
         k = kh_get(name, h, (const key_type)key);                                                           \
         if (k != kh_end(h)) {                                                                               \
@@ -96,13 +96,13 @@
     }
 
 #define KHASH_DESTROY(name, key_type, val_type)                                                              \
-    static void name##_hash_destroy(name##_hash_t *h) {                                                      \
+    static void name##_hash_destroy(name##_hash *h) {                                                      \
         kh_destroy(name, h);                                                                                 \
     }
 
 
 #define KHASH_BASE(name, key_type, val_type)    \
-typedef khash_t(name) name##_hash_t;            \
+typedef khash_t(name) name##_hash;            \
 KHASH_NEW(name)                                 \
 KHASH_GET(name, key_type, val_type)             \
 KHASH_PUT(name, key_type, val_type)             \
@@ -114,7 +114,7 @@ KHASH_DESTROY(name, key_type, val_type)
 
 
 #define KHASH_STR_INCR(name, val_type)                                                                      \
-    static bool name##_hash_incr_by_exists(name##_hash_t *h, const char *key, val_type val, bool *exists) { \
+    static bool name##_hash_incr_by_exists(name##_hash *h, const char *key, val_type val, bool *exists) { \
         khiter_t k;                                                                                         \
         int ret = 0;                                                                                        \
         k = kh_get(name, h, key);                                                                           \
@@ -149,7 +149,7 @@ KHASH_DESTROY(name, key_type, val_type)
     }
 
 #define KHASH_STR_TO_ID(name, val_type)                                                                     \
-    static bool name##_hash_to_id_exists(name##_hash_t *h, const char *key, val_type *val, bool *exists) {  \
+    static bool name##_hash_to_id_exists(name##_hash *h, const char *key, val_type *val, bool *exists) {  \
         khiter_t k;                                                                                         \
         int ret = 0;                                                                                        \
         k = kh_get(name, h, key);                                                                           \
@@ -174,13 +174,16 @@ KHASH_DESTROY(name, key_type, val_type)
         *val = kh_value(h, k);                                                                              \
         return true;                                                                                        \
     }                                                                                                       \
-    static bool name##_hash_to_id(name##_hash_t *h, const char *key, val_type *val) {                       \
+    static bool name##_hash_to_id(name##_hash *h, const char *key, val_type *val) {                       \
         bool exists = false;                                                                                \
-        return name##_hash_to_id_exists(h, key, val, &exists);                                              \
+        if (!name##_hash_to_id_exists(h, key, val, &exists)) {                                              \
+            return false;                                                                                   \
+        };                                                                                                  \
+        return exists;                                                                                      \
     }
 
 #define KHASH_INCR(name, key_type, val_type)                                                                \
-    static bool name##_hash_incr_by_exists(name##_hash_t *h, key_type key, val_type val, bool *exists) {    \
+    static bool name##_hash_incr_by_exists(name##_hash *h, key_type key, val_type val, bool *exists) {    \
         khiter_t k;                                                                                         \
         int ret = 0;                                                                                        \
         k = kh_get(name, h, key);                                                                           \
@@ -197,14 +200,14 @@ KHASH_DESTROY(name, key_type, val_type)
         kh_value(h, k) += val;                                                                              \
         return true;                                                                                        \
     }                                                                                                       \
-    static bool name##_hash_incr_exists(name##_hash_t *h, key_type key, bool *exists) {                     \
+    static bool name##_hash_incr_exists(name##_hash *h, key_type key, bool *exists) {                     \
         return name##_hash_incr_by_exists(h, key, (val_type)1, exists);                                     \
     }                                                                                                       \
-    static bool name##_hash_incr_by(name##_hash_t *h, key_type key, val_type val) {                         \
+    static bool name##_hash_incr_by(name##_hash *h, key_type key, val_type val) {                         \
         bool exists = false;                                                                                \
         return name##_hash_incr_by_exists(h, key, val, &exists);                                            \
     }                                                                                                       \
-    static bool name##_hash_incr(name##_hash_t *h, key_type key) {                                          \
+    static bool name##_hash_incr(name##_hash *h, key_type key) {                                          \
         bool exists = false;                                                                                \
         return name##_hash_incr_by_exists(h, key, (val_type)1, &exists);                                    \
     }
