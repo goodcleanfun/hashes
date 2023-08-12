@@ -1,6 +1,6 @@
 {
   "name": "hashes",
-  "version": "0.3.2",
+  "version": "0.4.0",
   "repo": "goodcleanfun/hashes",
   "description": "Hashtables for standard types using khash",
   "keywords": ["hash", "hashtable", "khash", "counter", "hashing"],
