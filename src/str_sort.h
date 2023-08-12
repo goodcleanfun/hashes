@@ -1,8 +1,8 @@
 #ifndef SORT_STR_H
 #define SORT_STR_H
 
-#include "ksort/ksort.h"
+#include "sorting/introsort.h"
 
-KSORT_INIT_STR
+INTROSORT_INIT_STR
 
 #endif

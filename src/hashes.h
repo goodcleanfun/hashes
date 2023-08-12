@@ -6,7 +6,6 @@
 #include <stdbool.h>
 
 #include "khash/khash.h"
-#include "ksort/ksort.h"
 
 // Sort by value (must be defined after the vectors)
 
